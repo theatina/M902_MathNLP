@@ -18,6 +18,7 @@ class Exercises:
     
         return 2
 
+    #making use of capital letters, in order not to have to deal with the two s 's, "σ" and "ς"
     def ex_1_3(sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
         alphabet = set("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
         A = set(sentence.upper())
@@ -34,9 +35,31 @@ class Exercises:
             print("\nThe sentence: '" + sentence + "' is ΝΟΤ a Pangram ! \n\n( set of missing letters: " + str(non_common_letters) + " )\n")
             return False
 
-    #
-    #Δεν μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν έχει απλά πληθικό αριθμό συνόλου χαρακτήρων 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες που 
+    def ex_1_4():
+        print("\nΔε μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν έχει απλά πληθικό αριθμό συνόλου χαρακτήρων 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες όπως σημεία στίξης (';', '.', ',', κλπ)\n")
 
+    def ex_1_5():
+        A = [ 'ενα', 'νεα', 'εννεα']
+        print("\n3 λέξεις με σύνολο γραμμάτων το {α, ε, ν}: " + str(A) + "\n")
+
+    def ex_1_6():
+        A = [ 'ΠΡΑΣΟ', 'ΣΠΑΡΟΣ', 'ΠΡΑΟΣ', 'ΑΣΠΡΟΣ']
+        print("\nΛέξεις με σύνολο γραμμάτων το {Α, Ο, Π, Ρ, Σ}: " + str(A) + "\n")
+
+    def ex_1_7():
+        A = [ 'ΠΛΟΙΟ', 'ΠΑΛΙΟΙ', 'ΠΑΛΙΟ', 'ΛΟΙΠΟΙ', 'ΠΟΛΛΟΙ']
+        print("\nΛέξεις με σύνολο γραμμάτων το {Π, Ι, Λ, Ο}, με μήκος > 4: " + str(A) + "\n")
+
+
+    def ex_1_8():
+        words = ['νερο', 'ποταμι', 'οργη']
+        vowels_gr = set('αεηιουω')
+        A = set()
+        for word in words:
+            A.update(word)
+            
+        vowels_not_in_words = vowels_gr - A.intersection(vowels_gr)
+        print(vowels_not_in_words)
 
 
 #main
@@ -44,6 +67,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-ex", type=int, help="number of exercise to solve", default=1)
 args = parser.parse_args()
 
-function_to_call = "ex_1_" + str(args.ex)
-method_to_call = getattr(Exercises, function_to_call)
-method_to_call()
+if (args.ex > 10) or (args.ex < 1):
+    print("\nExercises between 1 - 10 ! !\n")
+    exit()
+
+function_to_call_name = "ex_1_" + str(args.ex)
+fun_to_call = getattr(Exercises, function_to_call_name)
+fun_to_call()
