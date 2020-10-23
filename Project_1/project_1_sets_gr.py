@@ -1,3 +1,4 @@
+
 import argparse
 
 #Exercises
@@ -19,7 +20,7 @@ class Exercises:
         return 2
 
     #making use of capital letters, in order not to have to deal with the two s 's, "σ" and "ς"
-    def ex_1_3(sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
+    def ex_1_3(sentence=u"οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
         alphabet = set("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
         A = set(sentence.upper())
         common_letters = alphabet.intersection(A)
@@ -82,7 +83,38 @@ class Exercises:
         return 9
 
     def ex_1_10():
+        f = open ('set_theory_lab/cnn-gr_raw.txt', 'r', encoding='utf-8')
+        text_X = f.read()
+        f.close()
+        
+        f = open ('set_theory_lab/news247_raw.txt', 'r', encoding='utf-8')
+        text_Y = f.read()
+        f.close()
+        
+        set_X = set(text_X.split(" "))
+        set_Y = set(text_Y.split(" "))
+
+        common_words = set_X.intersection(set_Y)
+        symm_diff = set_X.symmetric_difference(set_Y)
+
+        com_wor_cardinality = len(common_words)
+        ratio_X = com_wor_cardinality/len(set_X)
+        ratio_Y = com_wor_cardinality/len(set_Y)
+
+        print("\nCommon words: %d\nSymmetric Difference: %d\nRatio_X ( common_words_cardinality/len(set1) ): %.3f\nRatio_Y ( common_words_cardinality/len(set2) ): %.3f\n\n"%(len(common_words), len(symm_diff), ratio_X, ratio_Y))
+
+        threshold = 0.77
+        if (ratio_X > threshold):
+            print("\nText X copies text Y ! !\n") 
+        elif (ratio_Y > threshold):
+            print("\nText Y copies text X ! !\n") 
+        else:
+            print("\nALL CLEAR ! !\n") 
+
+        
         return 10
+
+
 
 
 #main
