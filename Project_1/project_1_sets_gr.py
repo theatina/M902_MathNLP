@@ -165,35 +165,37 @@ class Exercises:
         text_X_only_words_cardinality = len(text_X_only_words)
         text_Y_only_words_cardinality = len(text_Y_only_words)
 
-        #Παρακάτω, σχηματίζονται όλοι οι λόγοι που αφορούν στη σύγκριση των δύο κειμένων
+        #Παρακάτω, σχηματίζονται κάποιοι λόγοι που αφορούν στη σύγκριση των δύο κειμένων
 
-        #ratio: Λόγος της τομής των κειμένων προς το κάθε κείμενο. Δηλώνει το ποσοστό της τομής που αποτελεί 
-        #το κάθε κείμενο. Όσο μεγαλύτερος είναι αυτός ο λόγος, τόσο μεγαλύτερο ποσοστό του κειμένου εκείνου 
-        #αποτελεί την τομή λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μεγαλύτερο λόγο, περιλαμβάνεται 
-        #στο κείμενο με το μικρότερο λόγο εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του πρώτου, 
-        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.7/0.75
-        ratio_X = common_words_cardinality/set_X_cardinality
-        ratio_Y = common_words_cardinality/set_Y_cardinality
+        #ratio1: Λόγος της τομής των λέξεων των κειμένων προς τις λέξεις κάθε κειμένου. Δηλώνει το ποσοστό της τομής  
+        #που αποτελεί το κάθε κείμενο. Όσο μεγαλύτερος είναι αυτός ο λόγος, τόσο μεγαλύτερο ποσοστό του κειμένου εκείνου 
+        #αποτελείται από την τομή λέξεων των δύο κειμένων. Συνεπώς, δηλώνει πως το κείμενο Υ με το μεγαλύτερο λόγο, 
+        #περιλαμβάνεται στο κείμενο Χ με το μικρότερο λόγο εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του  
+        #πρώτου(Υ), ξεπερνά ένα προκαθορισμένο threshold, συνήθως >= 0.7/0.75
+        ratio1_X = common_words_cardinality/set_X_cardinality
+        ratio1_Y = common_words_cardinality/set_Y_cardinality
 
         #ratio2: Λόγος των συνόλων των λέξεων του κάθε κειμένου προς την ένωσή του. Δηλώνει τη συμβολή του κάθε κειμένου 
-        #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου εκείνου 
-        #αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
+        #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου 
+        #εκείνου αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
         #στο κείμενο με το μεγαλύτερο λόγο, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, 
-        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.85/0.9
+        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >= 0.85/0.9
         ratio2_X = set_X_cardinality/all_words_cardinality
         ratio2_Y = set_Y_cardinality/all_words_cardinality
 
-        #ratio3: Λόγος των μη κοινών λέξεων του εκάστοτε κειμένου προς το σύνολο λέξεών του. Δηλώνει τη συμβολή του κάθε κειμένου 
-        #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου εκείνου 
-        #αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
-        #στο κείμενο με το μεγαλύτερο λόγο, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, 
-        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.85/0.9
+        #ratio3: Λόγος των μη κοινών λέξεων του εκάστοτε κειμένου προς το σύνολο λέξεών του. Δηλώνει τη συμβολή των 
+        #μη κοινών λέξεων του εκάστοτε κειμένου, στο συνολικό κείμενο. Όσο μικρότερος είναι ο λόγος, τόσο μεγαλύτερο 
+        #ποσοστό των λέξεων του κειμένου εκείνου αποτελείται από την τομή του με το δεύτερο κείμενο (συμπληρωματικές έννοιες 
+        #με το ratio1 παραπάνω). Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται στο κείμενο με το μεγαλύτερο 
+        #λόγο, κατά ratio1 = 1-ratio3 ποσοστό, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, βρίσκεται 
+        #κάτω από ένα προκαθορισμένο threshold, συνήθως <= 0.25/0.3
         ratio3_X = text_X_only_words_cardinality/set_X_cardinality
         ratio3_Y = text_Y_only_words_cardinality/set_Y_cardinality
 
-        print("\nCommon words: %d\nNon-common words: %d\nAll words: %d\n\nRatio_X ( common_words_cardinality/set_X_cardinality ): %.5f\nRatio_Y ( common_words_cardinality/set_Y_cardinality ): %.5f\n\nRatio2_X ( set_X_cardinality/all_words_cardinality ): %.5f\nRatio2_Y ( set_Y_cardinality/all_words_cardinality ): %.5f\n\nRatio3_X ( text_X_only_words_cardinality/set_X_cardinality ): %.5f\nRatio3_Y ( text_Y_only_words_cardinality/set_Y_cardinality ): %.5f\n"%(common_words_cardinality, non_common_words_cardinality, all_words_cardinality, ratio_X, ratio_Y, ratio2_X, ratio2_Y, ratio3_X, ratio3_Y))
+        print("\nCommon words: %d\nNon-common words: %d\nAll words: %d\n\nRatio1_X ( common_words_cardinality/set_X_cardinality ): %.5f\nRatio1_Y ( common_words_cardinality/set_Y_cardinality ): %.5f\n\nRatio2_X ( set_X_cardinality/all_words_cardinality ): %.5f\nRatio2_Y ( set_Y_cardinality/all_words_cardinality ): %.5f\n\nRatio3_X ( text_X_only_words_cardinality/set_X_cardinality ): %.5f\nRatio3_Y ( text_Y_only_words_cardinality/set_Y_cardinality ): %.5f\n"%(common_words_cardinality, non_common_words_cardinality, all_words_cardinality, ratio1_X, ratio1_Y, ratio2_X, ratio2_Y, ratio3_X, ratio3_Y))
 
-        #Χρήση του λόγου ratio3 ως μέτρο σύγκρισης των κειμένων
+        #Χρήση του λόγου ratio3 ως μέτρο σύγκρισης των κειμένων, με τιμή ορίου 0.3 . Κάτω από αυτή την τιμή, ο λόγος δηλώνει πως το αντίστοιχο κείμενο 
+        #περιλαμβάνεται 
         threshold = 0.3
         if (ratio3_X < threshold):
             print("\nText '%s' is included in text '%s' ! !\n"%(textX_name, textY_name)) 
