@@ -3,14 +3,14 @@ import argparse
 #Exercises
 class Exercises:
     
-    def ex_1_1(self, sentence="Μια παπια μα ποια παπια; Μια παπια με παπια."):
+    def ex_1_1(self, sentence="Μια παπια, μα ποια παπια; Μια παπια με παπια."):
         #Set of all the characters of the sentence
         A = set(sentence)
         
         #Number of different characters (cardinal number of character set)
         cardinal_number_A = len(A)
         print("\nA = " + str(A))
-        print("\nΠληθικός αριθμός συνόλου A: " + str(cardinal_number_A) + "\n")
+        print("\nΠληθικός αριθμός του συνόλου χαρακτήρων (Α) της φράσης '%s' : %d \n" % (sentence, cardinal_number_A))
     
     def ex_1_2(self, sentence="Δεν προλαβαίνω ποτέ δεν προλαβαίνω"):
         #Splitting the sentence to get the set of all the words
@@ -20,7 +20,7 @@ class Exercises:
         #Find the number of words in the set (cardinal number of the word set)
         cardinal_number_A = len(A)
         print("\n A = " + str(A))
-        print("\nΠληθικός αριθμός συνόλου A: " + str(cardinal_number_A) + "\n")
+        print("\nΠληθικός αριθμός του συνόλου λέξεων (Α) της φράσης '%s' : %d \n" % (sentence, cardinal_number_A))
 
     #making use of capital letters, in order not to have to deal with the two s 's, "σ" and "ς"
     def ex_1_3(self, sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
@@ -38,8 +38,8 @@ class Exercises:
         #Find how many letters are common
         cardinal_number_common_letters = len(common_letters)
 
-        print("\nΠληθικός αριθμός συνόλου γραμμάτων που περιέχονται στη φράση: " + str(cardinal_number_common_letters))
-        
+        # print("\nΠληθικός αριθμός συνόλου γραμμάτων  " + str(cardinal_number_common_letters))
+        print("\nΠληθικός αριθμός του συνόλου γραμμάτων που περιέχονται στη φράση: '%s' : %d \n" % (sentence, cardinal_number_common_letters))
         #In order to be a pangram, we need the cardinal number of the common letters set to be exactly 24(greek alphabet)
         if cardinal_number_common_letters is len(alphabet):
             print("\nThe sentence: '%s' is a Pangram of length %d! \n"%(sentence,len(sentence)))
@@ -87,33 +87,77 @@ class Exercises:
 
 
     def ex_1_10(self):
-        f = open ('set_theory_lab/cnn-gr_raw.txt', 'r', encoding='utf-8')
+        #Φόρτωση κειμένου 'cnn-gr_raw'
+        textX_name = 'cnn-gr_raw'
+        textX_path = 'set_theory_lab/' + textX_name + '.txt'
+        f = open (textX_path, 'r', encoding='utf-8')
         text_X = f.read()
         f.close()
-        
-        f = open ('set_theory_lab/news247_raw.txt', 'r', encoding='utf-8')
+
+        #Φόρτωση κειμένου 'news247_raw'
+        textY_name = 'news247_raw'
+        textY_path = 'set_theory_lab/' + textY_name + '.txt'
+        f = open (textY_path, 'r', encoding='utf-8')
         text_Y = f.read()
         f.close()
         
+        #Δημιουργία συνόλων λέξεων του εκάστοτε κειμένου
         set_X = set(text_X.split(" "))
         set_Y = set(text_Y.split(" "))
 
+        #Δημιουργία συνόλων με διάφορα χαρακτηριστικά
+        #Κοινές λέξεις κειμένων
         common_words = set_X.intersection(set_Y)
-        symm_diff = set_X.symmetric_difference(set_Y)
+        #Σύνολο μη κοινών λέξεων ( ένωση συνόλων λέξεων των δύο κειμένων χωρίς την τομή τους )
+        non_common_words = set_X.symmetric_difference(set_Y)
+        #Σύνολο όλων των λέξεων και από τα δύο κείμενα
+        all_words = set_X.union(set_Y)
+        #Λέξεις του κειμένου Χ χωρίς τις λέξεις του κειμένου Υ
+        text_X_only_words = set_X - set_Y
+        #Λέξεις του κειμένου Υ χωρίς τις λέξεις του κειμένου Χ
+        text_Y_only_words = set_Y - set_X
 
-        com_wor_cardinality = len(common_words)
-        ratio_X = com_wor_cardinality/len(set_X)
-        ratio_Y = com_wor_cardinality/len(set_Y)
+        #Πληθικός αριθμός εκάστοτε συνόλου
+        common_words_cardinality = len(common_words)
+        all_words_cardinality = len(all_words)
+        non_common_words_cardinality = len(non_common_words)
+        set_X_cardinality = len(set_X)
+        set_Y_cardinality = len(set_Y)
+        text_X_only_words_cardinality = len(text_X_only_words)
+        text_Y_only_words_cardinality = len(text_Y_only_words)
+        
+        #Παρακάτω, σχηματίζονται όλοι οι λόγοι που αφορούν στη σύγκριση των δύο κειμένων
 
-        print("\nCommon words: %d\nSymmetric Difference: %d\nRatio_X ( common_words_cardinality/len(set1) ): %.3f\nRatio_Y ( common_words_cardinality/len(set2) ): %.3f\n\n"%(len(common_words), len(symm_diff), ratio_X, ratio_Y))
+        #ratio: Λόγος της τομής των κειμένων προς το κάθε κείμενο, δηλώνει το ποσοστό της τομής που αποτελεί 
+        #το κάθε κείμενο. Όσο μεγαλύτερος είναι αυτός ο λόγος, τόσο μεγαλύτερο ποσοστό του κειμένου εκείνου 
+        #αποτελεί την τομή λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μεγαλύτερο λόγο, περιλαμβάνεται 
+        #στο κείμενο με το μικρότερο λόγο εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του πρώτου, 
+        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.7/0.75
+        ratio_X = common_words_cardinality/set_X_cardinality
+        ratio_Y = common_words_cardinality/set_Y_cardinality
 
-        threshold = 0.77
-        if (ratio_X > threshold):
-            print("\nText X copies text Y ! !\n") 
-        elif (ratio_Y > threshold):
-            print("\nText Y copies text X ! !\n") 
+        #ratio2: Λόγος των συνόλων των λέξεων του κάθε κειμένου προς την ένωσή τους, δηλώνει τη συμβολή του κάθε κειμένου 
+        #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου εκείνου 
+        #αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
+        #στο κείμενο με το μεγαλύτερο λόγο, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, 
+        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.85/0.9
+        ratio2_X = set_X_cardinality/all_words_cardinality
+        ratio2_Y = set_Y_cardinality/all_words_cardinality
+
+        ratio3_X = text_X_only_words_cardinality/set_X_cardinality
+        ratio3_Y = text_Y_only_words_cardinality/set_Y_cardinality
+
+        print("\nCommon words: %d\nNon-common words: %d\nAll words: %d\n\nRatio_X ( common_words_cardinality/set_X_cardinality ): %.5f\nRatio_Y ( common_words_cardinality/set_Y_cardinality ): %.5f\n\nRatio2_X ( set_X_cardinality/all_words_cardinality ): %.5f\nRatio2_Y ( set_Y_cardinality/all_words_cardinality ): %.5f\n\nRatio3_X ( text_X_only_words_cardinality/set_X_cardinality ): %.5f\nRatio3_Y ( text_Y_only_words_cardinality/set_Y_cardinality ): %.5f\n"%(common_words_cardinality, non_common_words_cardinality, all_words_cardinality, ratio_X, ratio_Y, ratio2_X, ratio2_Y, ratio3_X, ratio3_Y))
+
+        #Χρήση του λόγου ratio3 ως μέτρο σύγκρισης των κειμένων
+        threshold = 0.3
+        if (ratio3_X < threshold):
+            print("\nText '%s' is included in text '%s' ! !\n"%(textX_name, textY_name)) 
+        elif (ratio3_Y < threshold):
+            print("\nText '%s' is included in text '%s' ! !\n"%(textY_name, textX_name)) 
         else:
-            print("\nALL CLEAR ! !\n") 
+            print("\nTexts are far from duplicates ! !\n") 
+
 
     
 
