@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#coding=utf-8
 import argparse
 
 #Exercises
@@ -23,7 +25,7 @@ class Exercises:
         print("\nΠληθικός αριθμός του συνόλου λέξεων (Α) της φράσης '%s' : %d \n" % (sentence, cardinal_number_A))
 
     #making use of capital letters, in order not to have to deal with the two s 's, "σ" and "ς"
-    def ex_1_3(self, sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
+    def ex_1_3(self, sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο φυσικων πορων"):
         #Set of all the capital greek letters
         alphabet = set("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
 
@@ -78,7 +80,7 @@ class Exercises:
     
 
     def ex_1_4(self, sentence="θα ΄ρθεις αποψε να διασκεδάσουμε με τους φίλους μας στην κάτω γειτονια των βλαχερνων;"):
-        print("\nΔε μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν απλώς έχει πληθικό αριθμό συνόλου χαρακτήρων τουλάχιστον 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες (';', '.', ',', '!', κλπ)\nΜπορούμε να το ελέγξουμε και με τη χρήση της συνάρτησης που υλοποιήθηκε στο προηγούμενο ερώτημα:")
+        print("\nΔε μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν απλώς έχει πληθικό αριθμό συνόλου χαρακτήρων τουλάχιστον 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες (';', '.', ',', '!', κλπ), το τελικό σίγμα ή και τονισμένα φωνήεντα, που θεωρούνται ξεχωριστοί χαρακτήρες.\nΜπορούμε να το ελέγξουμε και με τη χρήση της συνάρτησης που υλοποιήθηκε στο προηγούμενο ερώτημα:")
         is_pangram, card_num = (Exercises.ex_1_3(Exercises, sentence))
         print("\nCardinal number of the sentence's characters: %d > 24 . However, it is NOT a Pangram !\n"%(card_num))
 
@@ -93,18 +95,18 @@ class Exercises:
         A = [ 'ΠΡΑΣΟ', 'ΣΠΑΡΟΣ', 'ΠΡΑΟΣ', 'ΑΣΠΡΟΣ']
         counter = 1
         for i in A:
-            print("%d. '%s': %s == {Α, Ο, Π, Ρ, Σ}"%(counter,i,set(i)))
+            print("%d. '%s': %s == {'Α', 'Ο', 'Π', 'Ρ', 'Σ'}"%(counter,i,set(i)))
             counter+=1
 
     def ex_1_7(self):
         A = [ 'ΠΛΟΙΟ', 'ΛΟΙΠΟΙ', 'ΠΟΛΛΟΙ', 'ΠΟΛΟΙ', 'ΟΠΛΟΠΟΙΟΙ']
         counter = 1
         for i in A:
-            print("%d. '%s': %s == {Π, Ι, Λ, Ο} -> μήκος λέξης: %d > 4"%(counter,i,set(i),len(i)))
+            print("%d. '%s': %s == {'Π', 'Ι', 'Λ', 'Ο'} -> μήκος λέξης: %d > 4"%(counter,i,set(i),len(i)))
             counter+=1
 
     def ex_1_8(self):
-        words = ['νερο', 'ποταμι', 'οργη']
+        words = ['νερο', 'ποταμι', 'ορμη']
         vowels_gr = set('αεηιουω')
         all_chars = set()
         for word in words:
@@ -120,8 +122,11 @@ class Exercises:
         phrase2_list = phrase2.split(" ")
         phrase2_set = set(phrase2_list)
 
+        #αφαιρούνται οι μη σημαντικές(υψίσυχνες) λέξεις
         non_significant_words = set(['οι', 'στην', 'του', 'της'])
 
+        #Δημιουργείται το σύνολο της ένωσης των λέξεων των δύο φράσεων χωρίς την τομή τους και χωρίς 
+        # τις μη σημαντικές λέξεις
         significant_non_common_words = phrase1_set.symmetric_difference(phrase2_set) - non_significant_words
         print("\nPhrases:\n1. '" + str(phrase1) +"'\n2. '" + str(phrase2) + "'\n\nSignificant non common words of 1 & 2: " + str(significant_non_common_words) + "\n")
 
@@ -204,17 +209,13 @@ class Exercises:
         else:
             print("\nTexts are far from duplicates ! !\n") 
 
-
-    
-
-
 #main
 parser = argparse.ArgumentParser()
 parser.add_argument("-ex", type=int, help="number of exercise to solve", default=1)
 args = parser.parse_args()
 
 if (args.ex > 10) or (args.ex < 1):
-    print("\nExercises between 1 - 10 ! !\n")
+    print("\nExercise number must be between 1 - 10 ! !\n")
     exit()
 
 line = ["_" for i in range(100)]

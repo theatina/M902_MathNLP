@@ -1,0 +1,22 @@
+
+____________________________________________________________________________________________________
+
+
+Common words: 192
+Non-common words: 604
+All words: 796
+
+Ratio1_X ( common_words_cardinality/set_X_cardinality ): 0.25772
+Ratio1_Y ( common_words_cardinality/set_Y_cardinality ): 0.79012
+
+Ratio2_X ( set_X_cardinality/all_words_cardinality ): 0.93593
+Ratio2_Y ( set_Y_cardinality/all_words_cardinality ): 0.30528
+
+Ratio3_X ( text_X_only_words_cardinality/set_X_cardinality ): 0.74228
+Ratio3_Y ( text_Y_only_words_cardinality/set_Y_cardinality ): 0.20988
+
+
+Text 'news247_raw' is included in text 'cnn-gr_raw' ! !
+
+____________________________________________________________________________________________________
+
