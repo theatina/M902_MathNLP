@@ -26,14 +26,44 @@ class Exercises:
     def ex_1_3(self, sentence="οι πολιτικες και οικονομικες εξελιξεις διαδραματιζονται γυρω απο τις προσπαθειες, τις βλεψεις και τους αγωνες για τον ελεγχο των φυσικων πορων"):
         #Set of all the capital greek letters
         alphabet = set("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
+
+        #Set the accented vowels
+        accented_vowels = set("ΆΈΉΊΌΎΏ")
+
+        #In both cases of 'ς' and 'σ', the upper letter will be the same('Σ'), merging the two different lower symbols into one capital
+        input_txt_set = set(sentence.upper())
+        sentence_set = set(sentence)
+
+        #cases of accented vowels
+        input_txt_acc_vowels = accented_vowels.intersection(input_txt_set)
+
+        #create a tuple with pairs of non-accented and accented vowels
+        all_vowels = ( ('Α', 'Ά'), ('Ε', 'Έ'), ('Η', 'Ή'), ('Ι', 'Ί'), ('Ο', 'Ό'), ('Υ', 'Ύ'), ('Ω', 'Ώ') )
         
-        #In both cases of 'ς' and 'σ', the upper letter will be the same('Σ'), merging the two different lower symbols
-        A = set(sentence.upper())
+        acc_vowels_to_remove = []
+        vowels_to_add = []
+        #remove accents from the accented vowels in the input text set - update the character set of the sentense
+        for vowel in input_txt_acc_vowels: 
+            for tuple_index,a in enumerate(all_vowels):
+                #if an accented vowel is found, it is replaced by the non accented upper case one
+                if vowel in a:
+                    pos = a.index(vowel)
+                    acc_vowels_to_remove.append(vowel)
+                    vowel_to_add = all_vowels[tuple_index][pos-1]
+                    vowels_to_add.append(vowel_to_add)
+                    # input_txt_set.remove(vowel)
+                    # input_txt_set.update(vowel_to_add)
+
+        #remove accented vowels
+        input_txt_set.difference_update(acc_vowels_to_remove)
+        #add - if not in set - the non accented versions of the vowels above
+        input_txt_set.update(vowels_to_add)
         
-        #Creation of the sets 'A' and 'alphabet' intersection set - common letters
-        common_letters = alphabet.intersection(A)
+        #Creation of the sets 'input_txt_set' and 'alphabet' intersection set - common letters between the alphabet and the sentence set of characters
+        #which is the set of the letters that the sentence includes
+        common_letters = alphabet.intersection(input_txt_set)
         #Find the letters of the alphabet that are not included in the sentence set
-        non_common_letters = alphabet-common_letters
+        non_common_letters = alphabet - common_letters
 
         #Find how many letters are common
         cardinal_number_common_letters = len(common_letters)
@@ -43,34 +73,48 @@ class Exercises:
         #In order to be a pangram, we need the cardinal number of the common letters set to be exactly 24(greek alphabet)
         if cardinal_number_common_letters is len(alphabet):
             print("\nThe sentence: '%s' is a Pangram of length %d! \n"%(sentence,len(sentence)))
+            return True, len(sentence_set)
         else:
             print("\nThe sentence: '" + sentence + "' is ΝΟΤ a Pangram ! \n\n( set of missing letters: " + str(non_common_letters) + " )\n")
+            return False, len(sentence_set)
 
+    
 
-    def ex_1_4(self):
-        print("\nΔε μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν έχει απλά πληθικό αριθμό συνόλου χαρακτήρων 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες όπως σημεία στίξης (';', '.', ',', κλπ)\n")
+    def ex_1_4(self, sentence="θα ΄ρθεις αποψε να διασκεδάσουμε με τους φίλους μας στην κάτω γειτονια των βλαχερνων;"):
+        print("\nΔε μπορούμε να συμπεράνουμε ότι μια φράση είναι pangram εάν απλώς έχει πληθικό αριθμό συνόλου χαρακτήρων τουλάχιστον 24, καθώς μπορεί να περιέχει και άλλους χαρακτήρες (';', '.', ',', '!', κλπ)\nΜπορούμε να το ελέγξουμε και με τη χρήση της συνάρτησης που υλοποιήθηκε στο προηγούμενο ερώτημα:")
+        is_pangram, card_num = (Exercises.ex_1_3(Exercises, sentence))
+        print("\nCardinal number of the sentence's characters: %d > 24 . However, it is NOT a Pangram !\n"%(card_num))
 
     def ex_1_5(self):
         A = [ 'ενα', 'νεα', 'εννεα']
-        print("\n3 λέξεις με σύνολο γραμμάτων το {α, ε, ν}: " + str(A) + "\n")
+        counter = 1
+        for i in A:
+            print("%d. '%s': %s == {'α', 'ε', 'ν'}"%(counter,i,set(i)))
+            counter+=1
 
     def ex_1_6(self):
         A = [ 'ΠΡΑΣΟ', 'ΣΠΑΡΟΣ', 'ΠΡΑΟΣ', 'ΑΣΠΡΟΣ']
-        print("\nΛέξεις με σύνολο γραμμάτων το {Α, Ο, Π, Ρ, Σ}: " + str(A) + "\n")
+        counter = 1
+        for i in A:
+            print("%d. '%s': %s == {Α, Ο, Π, Ρ, Σ}"%(counter,i,set(i)))
+            counter+=1
 
     def ex_1_7(self):
-        A = [ 'ΠΛΟΙΟ', 'ΠΑΛΙΟΙ', 'ΠΑΛΙΟ', 'ΛΟΙΠΟΙ', 'ΠΟΛΛΟΙ']
-        print("\nΛέξεις με σύνολο γραμμάτων το {Π, Ι, Λ, Ο}, με μήκος > 4: " + str(A) + "\n")
+        A = [ 'ΠΛΟΙΟ', 'ΛΟΙΠΟΙ', 'ΠΟΛΛΟΙ', 'ΠΟΛΟΙ', 'ΟΠΛΟΠΟΙΟΙ']
+        counter = 1
+        for i in A:
+            print("%d. '%s': %s == {Π, Ι, Λ, Ο} -> μήκος λέξης: %d > 4"%(counter,i,set(i),len(i)))
+            counter+=1
 
     def ex_1_8(self):
         words = ['νερο', 'ποταμι', 'οργη']
         vowels_gr = set('αεηιουω')
-        A = set()
+        all_chars = set()
         for word in words:
-            A.update(word)
+            all_chars.update(word)
 
-        vowels_not_in_words = vowels_gr - A.intersection(vowels_gr)
-        print(vowels_not_in_words)
+        vowels_not_in_words = vowels_gr - all_chars.intersection(vowels_gr)
+        print("\nVowels not in the characters set of the words %s: %s\n"%(set(words),vowels_not_in_words))
 
     def ex_1_9(self, phrase1 = 'οι επιστημονες εστιαζουν στην αντιμετωπιση του ιου', phrase2 = 'οι επιστημονες εστιαζουν στην αντιμετωπιση της φτωχιας'):
         phrase1_list = phrase1.split(" ")
@@ -81,8 +125,7 @@ class Exercises:
 
         non_significant_words = set(['οι', 'στην', 'του', 'της'])
 
-        significant_non_common_words = phrase1_set.symmetric_difference(phrase2_set)
-        significant_non_common_words = significant_non_common_words - non_significant_words
+        significant_non_common_words = phrase1_set.symmetric_difference(phrase2_set) - non_significant_words
         print("\nPhrases:\n1. '" + str(phrase1) +"'\n2. '" + str(phrase2) + "'\n\nSignificant non common words of 1 & 2: " + str(significant_non_common_words) + "\n")
 
 
@@ -100,7 +143,7 @@ class Exercises:
         f = open (textY_path, 'r', encoding='utf-8')
         text_Y = f.read()
         f.close()
-        
+
         #Δημιουργία συνόλων λέξεων του εκάστοτε κειμένου
         set_X = set(text_X.split(" "))
         set_Y = set(text_Y.split(" "))
@@ -112,9 +155,9 @@ class Exercises:
         non_common_words = set_X.symmetric_difference(set_Y)
         #Σύνολο όλων των λέξεων και από τα δύο κείμενα
         all_words = set_X.union(set_Y)
-        #Λέξεις του κειμένου Χ χωρίς τις λέξεις του κειμένου Υ
+        #Λέξεις του κειμένου Χ χωρίς τις κοινές λέξεις με το κείμενο Υ
         text_X_only_words = set_X - set_Y
-        #Λέξεις του κειμένου Υ χωρίς τις λέξεις του κειμένου Χ
+        #Λέξεις του κειμένου Υ χωρίς τις κοινές λέξεις με το κείμενο Χ
         text_Y_only_words = set_Y - set_X
 
         #Πληθικός αριθμός εκάστοτε συνόλου
@@ -125,10 +168,10 @@ class Exercises:
         set_Y_cardinality = len(set_Y)
         text_X_only_words_cardinality = len(text_X_only_words)
         text_Y_only_words_cardinality = len(text_Y_only_words)
-        
+
         #Παρακάτω, σχηματίζονται όλοι οι λόγοι που αφορούν στη σύγκριση των δύο κειμένων
 
-        #ratio: Λόγος της τομής των κειμένων προς το κάθε κείμενο, δηλώνει το ποσοστό της τομής που αποτελεί 
+        #ratio: Λόγος της τομής των κειμένων προς το κάθε κείμενο. Δηλώνει το ποσοστό της τομής που αποτελεί 
         #το κάθε κείμενο. Όσο μεγαλύτερος είναι αυτός ο λόγος, τόσο μεγαλύτερο ποσοστό του κειμένου εκείνου 
         #αποτελεί την τομή λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μεγαλύτερο λόγο, περιλαμβάνεται 
         #στο κείμενο με το μικρότερο λόγο εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του πρώτου, 
@@ -136,7 +179,7 @@ class Exercises:
         ratio_X = common_words_cardinality/set_X_cardinality
         ratio_Y = common_words_cardinality/set_Y_cardinality
 
-        #ratio2: Λόγος των συνόλων των λέξεων του κάθε κειμένου προς την ένωσή τους, δηλώνει τη συμβολή του κάθε κειμένου 
+        #ratio2: Λόγος των συνόλων των λέξεων του κάθε κειμένου προς την ένωσή του. Δηλώνει τη συμβολή του κάθε κειμένου 
         #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου εκείνου 
         #αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
         #στο κείμενο με το μεγαλύτερο λόγο, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, 
@@ -144,6 +187,11 @@ class Exercises:
         ratio2_X = set_X_cardinality/all_words_cardinality
         ratio2_Y = set_Y_cardinality/all_words_cardinality
 
+        #ratio3: Λόγος των μη κοινών λέξεων του εκάστοτε κειμένου προς το σύνολο λέξεών του. Δηλώνει τη συμβολή του κάθε κειμένου 
+        #στο σύνολο της ένωσης των λέξεών τους. Όσο μικρότερος είναι ο λόγος, τόσο μικρότερο ποσοστό των λέξεων του κειμένου εκείνου 
+        #αποτελεί την ένωση των λέξεων των δύο. Συνεπώς, δηλώνει πως το κείμενο με το μικρότερο λόγο, περιλαμβάνεται 
+        #στο κείμενο με το μεγαλύτερο λόγο, εαν υπάρχει αξιοσημείωτη διαφορά και ιδιαίτερα όταν ο λόγος του δεύτερου, 
+        #ξεπερνά ένα προκαθορισμένο threshold, συνήθως >0.85/0.9
         ratio3_X = text_X_only_words_cardinality/set_X_cardinality
         ratio3_Y = text_Y_only_words_cardinality/set_Y_cardinality
 
