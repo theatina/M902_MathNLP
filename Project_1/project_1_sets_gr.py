@@ -27,7 +27,7 @@ class Exercises:
         #Set of all the capital greek letters
         alphabet = set("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
 
-        #Set the accented vowels
+        #Set of the accented vowels
         accented_vowels = set("ΆΈΉΊΌΎΏ")
 
         #In both cases of 'ς' and 'σ', the upper letter will be the same('Σ'), merging the two different lower symbols into one capital
@@ -51,8 +51,6 @@ class Exercises:
                     acc_vowels_to_remove.append(vowel)
                     vowel_to_add = all_vowels[tuple_index][pos-1]
                     vowels_to_add.append(vowel_to_add)
-                    # input_txt_set.remove(vowel)
-                    # input_txt_set.update(vowel_to_add)
 
         #remove accented vowels
         input_txt_set.difference_update(acc_vowels_to_remove)
@@ -68,7 +66,6 @@ class Exercises:
         #Find how many letters are common
         cardinal_number_common_letters = len(common_letters)
 
-        # print("\nΠληθικός αριθμός συνόλου γραμμάτων  " + str(cardinal_number_common_letters))
         print("\nΠληθικός αριθμός του συνόλου γραμμάτων που περιέχονται στη φράση: '%s' : %d \n" % (sentence, cardinal_number_common_letters))
         #In order to be a pangram, we need the cardinal number of the common letters set to be exactly 24(greek alphabet)
         if cardinal_number_common_letters is len(alphabet):
@@ -129,21 +126,20 @@ class Exercises:
         print("\nPhrases:\n1. '" + str(phrase1) +"'\n2. '" + str(phrase2) + "'\n\nSignificant non common words of 1 & 2: " + str(significant_non_common_words) + "\n")
 
 
-    def ex_1_10(self):
-        #Φόρτωση κειμένου 'cnn-gr_raw'
-        textX_name = 'cnn-gr_raw'
-        textX_path = 'set_theory_lab/' + textX_name + '.txt'
+    def ex_1_10(self, textX_path='./set_theory_lab/cnn-gr_raw.txt', textY_path = './set_theory_lab/news247_raw.txt' ):
+        #Φόρτωση κειμένου X
         f = open (textX_path, 'r', encoding='utf-8')
         text_X = f.read()
         f.close()
 
-        #Φόρτωση κειμένου 'news247_raw'
-        textY_name = 'news247_raw'
-        textY_path = 'set_theory_lab/' + textY_name + '.txt'
+        #Φόρτωση κειμένου Y
         f = open (textY_path, 'r', encoding='utf-8')
         text_Y = f.read()
         f.close()
 
+        textX_name = textX_path.split('/')[-1][:-4]
+        textY_name = textY_path.split('/')[-1][:-4]
+        
         #Δημιουργία συνόλων λέξεων του εκάστοτε κειμένου
         set_X = set(text_X.split(" "))
         set_Y = set(text_Y.split(" "))
