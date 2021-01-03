@@ -38,20 +38,25 @@ class Exercises:
         
         self.unique_overall_words = set(self.negative_class_words).union(set(self.positive_class_words))
 
+        print(self.positive_class_words,self.negative_class_words,self.unique_overall_words)
+
     def prior(self,class_type):
         if class_type=="-":
             return len(self.negative_class_docs)/len(self.training)
-        else:
+        elif class_type=="+":
             return len(self.positive_class_docs)/len(self.training)
 
     def likelihood(self,word,class_type):
         if class_type =="-":
             class_type_words = self.negative_class_words
-        else:
+        elif class_type =="+":
             class_type_words = self.positive_class_words
 
         occs_of_word_in_class = class_type_words.count(word)
         # print(occs_of_word_in_class)
+        print(occs_of_word_in_class)
+        print(len(class_type_words))
+        print(len(self.unique_overall_words))
 
         return (occs_of_word_in_class+1)/ ( len(class_type_words)+len(self.unique_overall_words))
 
@@ -73,18 +78,22 @@ class Exercises:
         print(f"Unique words: {len(self.unique_overall_words)}\nNegative class words: {len(self.negative_class_words)}\nPositive class words: {len(self.positive_class_words)}")
         
         # likelihood("μη",negative_class_words,len(unique_overall_words))
-        print(self.prior(self,"-"))
+        print(f"\nP(-): {self.prior(self,'-')}\nP(+): {self.prior(self,'+')}\n")
 
         for test_sentence in self.test:
             # print(test_sentence)
             for class_type in ["-","+"]:
                 score  = self.prior(self,class_type)
                 for word in test_sentence.split(" "):
-                    # print(word)
+                    
                     if word in self.unique_overall_words:
-                        score*= self.likelihood(self,word,class_type)
-                
-                print(f"\nConditional probability P( {class_type} | {test_sentence} ): {score}")
+                        
+                        word_score = self.likelihood(self,word,class_type)
+                        score*= word_score
+        
+                        print(word, word_score)
+
+                print(f"\nConditional probability P( {class_type} | {test_sentence} ): {score}\n\n")
 
         
         return 9    
