@@ -5,6 +5,9 @@ import argparse
 from collections import Counter
 import numpy as np
 from numpy.linalg import norm
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+import scipy
 
 # def load_data():
 #     training = open("./data/training_sentences.txt","r").read().split("\n")
@@ -25,11 +28,23 @@ from numpy.linalg import norm
 #Exercises
 class Exercises:
     
+
+    def ex_4_1(self):
+        pass
+
+    def ex_4_2(self):
+        pass 
+
+    def ex_4_3(self):
+        pass
+
+
     def initial_state(self):
         self.training = open("./data/training_sentences.txt","r").read().split("\n")
         self.test = open("./data/test_sentences.txt","r").read().split("\n")
 
         training_sentences = [ i.split(",") for i in self.training  ]
+        self.test_sentences = self.test
 
         self.negative_class_docs = [ i[0].split(" ") for i in training_sentences if i[1]=="-"]
         self.negative_class_words = [ element for i in self.negative_class_docs for element in i ]
@@ -38,7 +53,9 @@ class Exercises:
         
         self.unique_overall_words = set(self.negative_class_words).union(set(self.positive_class_words))
 
-        print(self.positive_class_words,self.negative_class_words,self.unique_overall_words)
+
+        # print(self.positive_class_words,self.negative_class_words,self.unique_overall_words)
+
 
     def prior(self,class_type):
         if class_type=="-":
@@ -53,26 +70,23 @@ class Exercises:
             class_type_words = self.positive_class_words
 
         occs_of_word_in_class = class_type_words.count(word)
+        print(f"\nOccurrencies: {occs_of_word_in_class}")
         # print(occs_of_word_in_class)
-        print(occs_of_word_in_class)
-        print(len(class_type_words))
-        print(len(self.unique_overall_words))
+        # print(len(class_type_words))
+        # print(len(self.unique_overall_words))
 
         return (occs_of_word_in_class+1)/ ( len(class_type_words)+len(self.unique_overall_words))
 
+    def test_sentence_cleaning(self):
+        self.test = [ [ y for y in i.split(" ") if y in self.unique_overall_words ] for i in self.test ]
+        return 
 
-    def ex_4_1(self):
-        pass
-
-    def ex_4_2(self):
-        pass 
-
-    def ex_4_3(self):
-        pass
 
     def ex_4_4(self):
     
         self.initial_state(self)
+        self.test_sentence_cleaning(self)
+
         # negative_class_words,positive_class_words,unique_overall_words = self.load_data()
        
         print(f"Unique words: {len(self.unique_overall_words)}\nNegative class words: {len(self.negative_class_words)}\nPositive class words: {len(self.positive_class_words)}")
@@ -80,21 +94,22 @@ class Exercises:
         # likelihood("μη",negative_class_words,len(unique_overall_words))
         print(f"\nP(-): {self.prior(self,'-')}\nP(+): {self.prior(self,'+')}\n")
 
+        counter = 0
         for test_sentence in self.test:
-            # print(test_sentence)
+            print(f"-----> SENTENCE #{counter+1} <-----")
             for class_type in ["-","+"]:
                 score  = self.prior(self,class_type)
-                for word in test_sentence.split(" "):
+               
+                for word in test_sentence:#.split(" "):
                     
-                    if word in self.unique_overall_words:
-                        
-                        word_score = self.likelihood(self,word,class_type)
-                        score*= word_score
-        
-                        print(word, word_score)
+                    word_score = self.likelihood(self,word,class_type)
+                    score*= word_score
+    
+                    print(word, word_score)
 
-                print(f"\nConditional probability P( {class_type} | {test_sentence} ): {score}\n\n")
+                print(f"\nConditional probability P( {class_type} | {self.test_sentences[counter]} ): {score}\n\n")
 
+            counter+=1
         
         return 9    
 
@@ -110,7 +125,113 @@ class Exercises:
     def ex_4_8(self):
         pass
 
+    
+    def fill_area(pt1,pt2,colour,mean,std):
+        # pt1 = mean + std
+        plt.plot([pt1 ,pt1 ],[0.0,scipy.stats.norm.pdf(pt1 ,mean, std)], color='black')
+
+        # pt2 = mean - std
+        plt.plot([pt2 ,pt2 ],[0.0,scipy.stats.norm.pdf(pt2 ,mean, std)], color='black')
+
+        ptx = np.linspace(pt1, pt2, 10)
+        pty = scipy.stats.norm.pdf(ptx,mean,std)
+
+        plt.fill_between(ptx, pty, color=colour, alpha=1.0)
+
+
     def ex_4_9(self):
+    # pdf for a normal distribution
+    # define distribution parameters
+
+        # mu = 50
+        # sigma = 3
+
+        # # create distribution
+        # dist = norm(mu, sigma)
+
+        # # plot pdf
+        # values = np.arange(0,100,0.1)
+        # # values = [value for value in range(0, 100)]
+        # probabilities = [dist.pdf(value) for value in values]
+        # fig, ax = plt.subplots()
+        # ax.plot(values, probabilities)
+
+        # points_to_annotate = [ mu+i*sigma for i in range(-3,4) ] 
+        # ax.plot(points_to_annotate, probabilities[points_to_annotate])
+        
+        # ax.grid(True)
+        # ax.set_title(f"Probability density of normal distribution N({mu}, {sigma}$^2$)")
+        # ax.set_xlabel('x')
+        # ax.set_ylabel('pdf(x)')
+        # ax.set_xticks([i for i in range(20,100,10)])
+        # plt.show()
+
+
+        x_min = 20.0
+        x_max = 90.0
+
+        mean = 50.0
+        std = 3.0
+
+        x = np.linspace(x_min, x_max, 10000)
+
+        y = scipy.stats.norm.pdf(x,mean,std)
+
+        plt.plot(x,y, color='black')
+
+        pt1 = [ mean+i*std for i in [1.0,1.0,-1.0,2.0,-2.0,3.0,-3.0] ] 
+        pt2 = [ mean+i*std for i in [-1.0,+2.0,-2.0,3.0,-3.0,10.0,-10.0] ] 
+        colours = [ '#0b559f', '#2b7bba', '#2b7bba', '#539ecd', '#539ecd', '#89bedc', '#89bedc' ]
+
+        print(pt1,pt2)
+
+        for p1,p2,colour in zip(pt1,pt2,colours):
+            self.fill_area(p1,p2,colour,mean,std)
+
+
+        # #1
+        # self.fill_area(mean+std,mean-std,'#0b559f',mean,std)
+        
+        # #2
+        # self.fill_area(mean+std,mean+2.0*std,'#2b7bba',mean,std)
+
+        # #3
+        # self.fill_area(mean-std,mean-2.0*std,'#2b7bba',mean,std)
+
+        # #4
+        # self.fill_area(mean+2.0*std,mean+3.0*std,'#539ecd',mean,std)
+
+        # #5
+        # self.fill_area(mean-2.0*std,mean-3.0*std,'#539ecd',mean,std)
+
+        # #6
+        # self.fill_area(mean+3.0*std,mean+10*std,'#89bedc',mean,std)
+
+        # #7
+        # self.fill_area(mean-3.0*std,mean-10*std,'#89bedc',mean,std)
+        
+
+        plt.grid()
+
+        plt.xlim(x_min,x_max)
+        plt.ylim(0,0.25)
+
+        # plt.title('How to plot a normal distribution in python with matplotlib',fontsize=10)
+        plt.title(f"Probability density of normal distribution N ({ int(mean) }, {int(std)}$^2$)")
+
+        plt.xlabel('x')
+        plt.ylabel('Normal Distribution (PDF)')
+        ticks = pt1.copy()
+        ticks.extend(pt2)
+        ticks.append(mean)
+        print(ticks)
+        plt.xticks( ticks )
+
+        plt.savefig("./normal_distribution.png")
+        plt.show()
+
+
+
         pass
 
     def ex_4_10(self):
