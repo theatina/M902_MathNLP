@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 #coding=utf-8
 
+'''
+
+Christina-Theano (Theatina) Kylafi
+M902 - Project 4
+LT1200012
+
+'''
+
 import argparse
 from collections import Counter
 import numpy as np
@@ -70,10 +78,7 @@ class Exercises:
             class_type_words = self.positive_class_words
 
         occs_of_word_in_class = class_type_words.count(word)
-        print(f"\nOccurrencies: {occs_of_word_in_class}")
-        # print(occs_of_word_in_class)
-        # print(len(class_type_words))
-        # print(len(self.unique_overall_words))
+        # print(f"\nOccurrencies: {occs_of_word_in_class}")
 
         return (occs_of_word_in_class+1)/ ( len(class_type_words)+len(self.unique_overall_words))
 
@@ -127,10 +132,9 @@ class Exercises:
 
     
     def fill_area(pt1,pt2,colour,mean,std):
-        # pt1 = mean + std
+
         plt.plot([pt1 ,pt1 ],[0.0,scipy.stats.norm.pdf(pt1 ,mean, std)], color='black')
 
-        # pt2 = mean - std
         plt.plot([pt2 ,pt2 ],[0.0,scipy.stats.norm.pdf(pt2 ,mean, std)], color='black')
 
         ptx = np.linspace(pt1, pt2, 10)
@@ -141,31 +145,6 @@ class Exercises:
 
     def ex_4_9(self):
     # pdf for a normal distribution
-    # define distribution parameters
-
-        # mu = 50
-        # sigma = 3
-
-        # # create distribution
-        # dist = norm(mu, sigma)
-
-        # # plot pdf
-        # values = np.arange(0,100,0.1)
-        # # values = [value for value in range(0, 100)]
-        # probabilities = [dist.pdf(value) for value in values]
-        # fig, ax = plt.subplots()
-        # ax.plot(values, probabilities)
-
-        # points_to_annotate = [ mu+i*sigma for i in range(-3,4) ] 
-        # ax.plot(points_to_annotate, probabilities[points_to_annotate])
-        
-        # ax.grid(True)
-        # ax.set_title(f"Probability density of normal distribution N({mu}, {sigma}$^2$)")
-        # ax.set_xlabel('x')
-        # ax.set_ylabel('pdf(x)')
-        # ax.set_xticks([i for i in range(20,100,10)])
-        # plt.show()
-
 
         x_min = 20.0
         x_max = 90.0
@@ -188,28 +167,6 @@ class Exercises:
         for p1,p2,colour in zip(pt1,pt2,colours):
             self.fill_area(p1,p2,colour,mean,std)
 
-
-        # #1
-        # self.fill_area(mean+std,mean-std,'#0b559f',mean,std)
-        
-        # #2
-        # self.fill_area(mean+std,mean+2.0*std,'#2b7bba',mean,std)
-
-        # #3
-        # self.fill_area(mean-std,mean-2.0*std,'#2b7bba',mean,std)
-
-        # #4
-        # self.fill_area(mean+2.0*std,mean+3.0*std,'#539ecd',mean,std)
-
-        # #5
-        # self.fill_area(mean-2.0*std,mean-3.0*std,'#539ecd',mean,std)
-
-        # #6
-        # self.fill_area(mean+3.0*std,mean+10*std,'#89bedc',mean,std)
-
-        # #7
-        # self.fill_area(mean-3.0*std,mean-10*std,'#89bedc',mean,std)
-        
 
         plt.grid()
 
